@@ -1,36 +1,34 @@
-import { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
 import {
-  Box,
-  AppBar,
-  Toolbar,
-  Typography,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Container,
-} from '@mui/material';
-import {
-  Dashboard as DashboardIcon,
-  Assignment as TaskIcon,
-  Notifications as ReminderIcon,
-  TrendingUp as MarketIcon,
+    Dashboard as DashboardIcon,
+    TrendingUp as MarketIcon,
+    Notifications as ReminderIcon,
+    Assignment as TaskIcon,
 } from '@mui/icons-material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import {
+    AppBar,
+    Box,
+    Container,
+    Drawer,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Toolbar,
+    Typography,
+} from '@mui/material';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 // Pages (we'll create these next)
 import Dashboard from './pages/Dashboard';
-import Tasks from './pages/Tasks';
-import Reminders from './pages/Reminders';
 import Market from './pages/Market';
+import Reminders from './pages/Reminders';
+import Tasks from './pages/Tasks';
 
 const drawerWidth = 240;
 
 const menuItems = [
-  { text: 'Dashboard', icon<PathsToReview>: <DashboardIcon />, path: '/' },
+  { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
   { text: 'Tasks', icon: <TaskIcon />, path: '/tasks' },
   { text: 'Reminders', icon: <ReminderIcon />, path: '/reminders' },
   { text: 'Market Data', icon: <MarketIcon />, path: '/market' },
