@@ -44,46 +44,6 @@ market_fetcher = MarketDataFetcher()
 summary_generator = SummaryGenerator()
 
 
-# Pydantic models for API
-class TaskCreate(BaseModel):
-    title: str
-    description: str = ""
-    due_date: Optional[str] = None
-    priority: str = "medium"
-
-
-class TaskUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    due_date: Optional[str] = None
-    priority: Optional[str] = None
-
-
-class ReminderCreate(BaseModel):
-    title: str
-    description: str = ""
-    datetime: str
-    recurring_type: Optional[str] = None
-
-
-class ReminderUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    datetime: Optional[str] = None
-    recurring_type: Optional[str] = None
-
-
-# Health check
-@app.get("/")
-async def root():
-    """Root endpoint - health check."""
-    return {
-        "status": "online",
-        "service": "Market Monitor API",
-        "version": "1.0.0"
-    }
-
-
 # Task endpoints
 @app.get("/api/tasks")
 async def get_tasks(include_completed: bool = False):
@@ -361,10 +321,53 @@ async def get_dashboard_stats():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# Serve static files (frontend) in production
+# Pydantic models for API
+class TaskCreate(BaseModel):
+    title: str
+    description: str = ""
+    due_date: Optional[str] = None
+    priority: str = "medium"
+
+
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    due_date: Optional[str] = None
+    priority: Optional[str] = None
+
+
+class ReminderCreate(BaseModel):
+    title: str
+    description: str = ""
+    datetime: str
+    recurring_type: Optional[str] = None
+
+
+class ReminderUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    datetime: Optional[str] = None
+    recurring_type: Optional[str] = None
+
+
+# Serve static files (frontend) - MUST be at the end after all API routes
 static_dir = Path(__file__).parent.parent / "static"
-if static_dir.exists():
+if static_dir.exists() and static_dir.is_dir():
+    logger.info(f"Serving static files from {static_dir}")
     app.mount("/", StaticFiles(directory=str(static_dir), html=True), name="static")
+else:
+    logger.warning(f"Static directory not found at {static_dir}, frontend will not be served")
+    
+    # Fallback root endpoint if no static files
+    @app.get("/")
+    async def root():
+        """Root endpoint - health check."""
+        return {
+            "status": "online",
+            "service": "Market Monitor API",
+            "version": "1.0.0",
+            "message": "Frontend not built. Run './build.sh' to build the React frontend."
+        }
 
 
 if __name__ == "__main__":
