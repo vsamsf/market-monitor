@@ -113,7 +113,7 @@ export default function Dashboard() {
           />
         </Grid>
 
-        {stats?.tasks.high_priority > 0 && (
+        {stats && stats.tasks.high_priority && stats.tasks.high_priority > 0 && (
           <Grid item xs={12}>
             <Alert severity="warning">
               You have {stats.tasks.high_priority} high-priority task(s) pending.
