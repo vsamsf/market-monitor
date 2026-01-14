@@ -52,6 +52,7 @@ class ReminderManager:
                 session.add(reminder)
                 session.flush()
                 session.refresh(reminder)
+                session.expunge(reminder)  # Expunge to avoid detached instance errors
                 logger.info(f"Created reminder: {title} at {reminder_dt}")
                 return reminder
                 
