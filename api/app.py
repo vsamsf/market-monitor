@@ -44,6 +44,35 @@ market_fetcher = MarketDataFetcher()
 summary_generator = SummaryGenerator()
 
 
+# Pydantic models for API - MUST be defined before routes
+class TaskCreate(BaseModel):
+    title: str
+    description: str = ""
+    due_date: Optional[str] = None
+    priority: str = "medium"
+
+
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    due_date: Optional[str] = None
+    priority: Optional[str] = None
+
+
+class ReminderCreate(BaseModel):
+    title: str
+    description: str = ""
+    datetime: str
+    recurring_type: Optional[str] = None
+
+
+class ReminderUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    datetime: Optional[str] = None
+    recurring_type: Optional[str] = None
+
+
 # Task endpoints
 @app.get("/api/tasks")
 async def get_tasks(include_completed: bool = False):
@@ -319,35 +348,6 @@ async def get_dashboard_stats():
     except Exception as e:
         logger.error(f"Error fetching dashboard stats: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-
-
-# Pydantic models for API
-class TaskCreate(BaseModel):
-    title: str
-    description: str = ""
-    due_date: Optional[str] = None
-    priority: str = "medium"
-
-
-class TaskUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    due_date: Optional[str] = None
-    priority: Optional[str] = None
-
-
-class ReminderCreate(BaseModel):
-    title: str
-    description: str = ""
-    datetime: str
-    recurring_type: Optional[str] = None
-
-
-class ReminderUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    datetime: Optional[str] = None
-    recurring_type: Optional[str] = None
 
 
 # Serve static files (frontend) - MUST be at the end after all API routes
