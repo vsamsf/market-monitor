@@ -54,16 +54,10 @@ class TaskManager:
             with self.db.get_session() as session:
                 session.add(task)
                 session.flush()
-                # Make a copy of the data before detachment
-                task_id = task.id
-                task_title = task.title
-                task_priority = task.priority
-                task_due_date = task.due_date
+                session.refresh(task)
+                session.expunge(task)  # Expunge to avoid detached instance errors
                 
-            logger.info(f"Created task: {task_title} (priority: {task_priority})")
-            
-            # Return the task with its ID set
-            task.id = task_id
+            logger.info(f"Created task: {task.title} (priority: {task.priority})")
             return task
                 
         except Exception as e:
