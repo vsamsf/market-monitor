@@ -1,0 +1,88 @@
+# Financial Market Monitor & Productivity System Configuration
+
+# Application Settings
+app:
+  name: "Market Monitor & Productivity System"
+  timezone: "Asia/Kolkata"
+  log_level: "INFO"
+  log_file: "logs/app.log"
+
+# Database Configuration
+database:
+  url: "sqlite:///data/productivity.db"
+  echo: false
+
+# Market Monitoring
+market:
+  # Daily summary time (IST)
+  summary_time: "07:00"
+  
+  # Market hours monitoring (IST)
+  market_open: "09:15"
+  market_close: "15:30"
+  monitor_interval_minutes: 30
+  
+  # Indices to monitor
+  indices:
+    - symbol: "^NSEI"
+      name: "NIFTY 50"
+      type: "large_cap"
+    - symbol: "^BSESN"
+      name: "SENSEX"
+      type: "large_cap"
+    - symbol: "^NSEMDCP50"
+      name: "NIFTY MIDCAP 50"
+      type: "mid_cap"
+    - symbol: "NIFTY_SMLCAP_50.NS"
+      name: "NIFTY SMALLCAP 50"
+      type: "small_cap"
+  
+  # Alert thresholds
+  alerts:
+    significant_change_percent: 2.0
+    large_move_percent: 1.5
+
+# Notifications
+notifications:
+  # Desktop notifications (Ubuntu)
+  desktop:
+    enabled: true
+    app_name: "Market Monitor"
+  
+  # Email notifications
+  email:
+    enabled: false
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    use_tls: true
+    sender_email: ""  # Set via environment variable EMAIL_SENDER
+    sender_password: ""  # Set via environment variable EMAIL_PASSWORD
+    recipient_email: ""  # Set via environment variable EMAIL_RECIPIENT
+  
+  # Telegram notifications
+  telegram:
+    enabled: false
+    bot_token: ""  # Set via environment variable TELEGRAM_BOT_TOKEN
+    chat_id: ""  # Set via environment variable TELEGRAM_CHAT_ID
+
+# Reminders
+reminders:
+  check_interval_seconds: 60
+  advance_notification_minutes: 5
+
+# Tasks/To-Do
+tasks:
+  default_priority: "medium"
+  auto_archive_completed_days: 30
+  priorities:
+    - "low"
+    - "medium"
+    - "high"
+
+# Scheduler
+scheduler:
+  timezone: "Asia/Kolkata"
+  job_defaults:
+    coalesce: true
+    max_instances: 1
+    misfire_grace_time: 300
