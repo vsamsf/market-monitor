@@ -1,0 +1,9 @@
+{
+  "name": "market-monitor-backend",
+  "version": "1.0.0",
+  "description": "Package.json to enable Node.js installation on Render for building frontend",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Backend package.json - frontend build happens in ./frontend'"
+  }
+}

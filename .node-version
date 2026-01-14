@@ -1,0 +1,5 @@
+# Node.js Configuration for Frontend Build
+# This file tells Render which Node.js version to install
+# Render auto-detects this file and installs Node.js alongside Python
+
+v18.18.0
